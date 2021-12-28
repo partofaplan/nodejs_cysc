@@ -1,6 +1,7 @@
 var XLSX = require('xlsx');
 var workbook = XLSX.readFile('test.xlsx');
 var sheet_name_list = workbook.SheetNames;
+var key = "Timestamp";
 fs = require('fs');
 sheet_name_list.forEach(function(y) {
     var worksheet = workbook.Sheets[y];
@@ -30,10 +31,11 @@ sheet_name_list.forEach(function(y) {
 
         if(!data[row]) data[row]={};
         data[row][headers[col]] = value;
+        delete data[key];
     }
+    
     //drop those first two rows which are empty
     data.shift();
     data.shift();
-    //console.log(data);
     fs.writeFile('./cys-app/src/components/LocalPosts/cys.json', JSON.stringify(data), function (err) {});
 });
